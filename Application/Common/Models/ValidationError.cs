@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Models
 {
-    public class ValidationError
+    public sealed class ValidationError
     {
         public string FieldName { get; set; }
         public string Message { get; set; }

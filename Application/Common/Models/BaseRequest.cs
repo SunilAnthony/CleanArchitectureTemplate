@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Models
 {
-    public class BaseRequest
+    public sealed class BaseRequest
     {
         public string UserId { get; set; }
     }

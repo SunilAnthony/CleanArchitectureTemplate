@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Dtos
 {
-    public class CourseDto
+    public sealed class CourseDto
     {
         public int CourseId { get; set; }
         public string Title { get; set; }

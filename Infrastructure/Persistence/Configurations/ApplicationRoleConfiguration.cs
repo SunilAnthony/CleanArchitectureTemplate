@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class ApplicationRoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
+    public sealed class ApplicationRoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
     {
         public void Configure(EntityTypeBuilder<ApplicationRole> builder)
         {

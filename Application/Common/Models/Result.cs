@@ -1,6 +1,6 @@
 ﻿namespace Application.Common.Models;
 
-public class Result
+public sealed class Result
 {
     internal Result(bool succeeded, IEnumerable<string> errors)
     {

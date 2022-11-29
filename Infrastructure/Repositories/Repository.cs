@@ -58,9 +58,9 @@ namespace Infrastructure.Repositories
             return await _entities.ToListAsync(cancellationToken);
         }
 
-        public virtual async Task<T> GetAsync(int id, CancellationToken cancellationToken = default)
+        public virtual async Task<T> GetAsync(int StudentId, CancellationToken cancellationToken = default)
         {
-            return await _entities.FindAsync(id, cancellationToken) ?? new T();
+            return await _entities.FindAsync(StudentId, cancellationToken) ?? new T();
         }
 
         public async virtual Task<bool> UpdateAsync(T entity, CancellationToken cancellationToken = default)

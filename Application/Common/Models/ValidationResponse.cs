@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Models
 {
-    public class ValidationResponse
+    public sealed class ValidationResponse
     {
         public List<ValidationError> Errors { get; set; } = new List<ValidationError>();
     }

@@ -21,10 +21,10 @@ namespace Application.Students.Queries
         }
         public async Task<Response<StudentDto>> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
         {
-            var student = await _repo.FindAsync(x => x.StudentId == request.Id, cancellationToken);
+            IEnumerable<Student>? student = await _repo.FindAsync(x => x.StudentId == request.Id, cancellationToken);
             if (student is null)
                 return Response.Fail<StudentDto>("Not Found", HttpStatusCode.NotFound);
-            var studentDto =_mapper.Map<Student,StudentDto>(student.FirstOrDefault());
+            StudentDto studentDto = _mapper.Map<Student, StudentDto>(student.FirstOrDefault()!);
             return Response.Ok<StudentDto>(studentDto, HttpStatusCode.OK, "Success");
         }
     }

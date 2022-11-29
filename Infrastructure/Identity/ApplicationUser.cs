@@ -2,6 +2,6 @@
 
 namespace Infrastructure.Identity;
 
-public class ApplicationUser : IdentityUser
+public sealed class ApplicationUser : IdentityUser
 {
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Dtos
 {
-    public class EnrollmentDto
+    public sealed class EnrollmentDto
     {
         public int EnrollmentId { get; set; }
         public Grade? Grade { get; set; }

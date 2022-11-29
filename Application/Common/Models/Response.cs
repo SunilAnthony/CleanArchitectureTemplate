@@ -15,7 +15,7 @@ namespace Application.Common.Models
         public static Response<T> Ok<T>(T data, HttpStatusCode httpStatusCode, string message ) =>
             new Response<T>(data, httpStatusCode, message, false);
     }
-    public class Response<T>
+    public sealed class Response<T>
     {
         public Response(T data, HttpStatusCode httpStatusCode, string msg, bool error)
         {
