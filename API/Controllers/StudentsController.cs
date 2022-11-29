@@ -1,4 +1,5 @@
 ﻿using Application.Common.Dtos;
+using Application.Common.Models;
 using Application.Students.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -16,10 +17,17 @@ namespace API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet]
-        public async Task<IEnumerable<StudentDto>> Index()
+        [HttpGet(Name ="Get All Student")]
+        public async Task<IEnumerable<StudentDto>> Get()
         {
             return await _mediator.Send(new GetAllStudentsQuery());
+        }
+
+        [HttpGet("{id}", Name = "Get Student by Id")]
+        
+        public async Task<Response<StudentDto>> GetById(int id)
+        {
+            return await _mediator.Send(new GetStudentByIdQuery(id));
         }
     }
 }

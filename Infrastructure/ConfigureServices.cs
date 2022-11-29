@@ -12,6 +12,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Application.Common.Mappings;
 using Newtonsoft.Json;
+using Infrastructure.Pipes;
+using FluentValidation;
+using Application.Common.Behaviors;
+using Application.Common.Interfaces.Repositories;
+using Domain.Entities;
+using Infrastructure.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -36,10 +42,21 @@ public static class ConfigureServices
                 });
         }
 
+        services.AddHttpContextAccessor();
+
+    
+        //Add generic pipe which run top to bottom: order is important
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UserPipe<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+
+
+        services.AddValidatorsFromAssembly(typeof(Application.AssemblyReference).Assembly,
+            includeInternalTypes: true);
+    
         //services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ICurrentUser, CurrentUser>();
         services.AddScoped<IDateTime, DateTimeService>();
-        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddTransient<IStudentRepository, StudentRepository>();
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         //services.AddScoped<SecurityDbContextInitializer>();
 

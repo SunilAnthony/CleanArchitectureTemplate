@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace Infrastructure.Persistence
 {
-    public class ApplicationDbContext : DbContext, IApplicationDbContext
+    public class ApplicationDbContext : DbContext
     {
 
         private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
@@ -50,7 +50,13 @@ namespace Infrastructure.Persistence
 
             return await base.SaveChangesAsync(cancellationToken);
         }
-        
+
+        public override int SaveChanges()
+        {
+           
+            return base.SaveChanges();
+           
+        }
     }
 
 

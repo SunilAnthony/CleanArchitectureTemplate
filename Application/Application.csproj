@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Enrollments\" />
-    <Folder Include="Students\Commands\" />
-    <Folder Include="Common\Behaviors\" />
     <Folder Include="Courses\Commands\" />
     <Folder Include="Courses\Queries\" />
   </ItemGroup>
