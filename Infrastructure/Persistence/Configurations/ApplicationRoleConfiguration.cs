@@ -15,7 +15,7 @@ namespace Infrastructure.Persistence.Configurations
         {
             builder.HasData
                 (
-                new ApplicationRole("Administrator")
+                new ApplicationRole("Administrator", "Administrator")
                 );
         }
     }

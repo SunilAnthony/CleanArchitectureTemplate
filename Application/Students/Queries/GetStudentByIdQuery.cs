@@ -1,4 +1,4 @@
-﻿using Application.Common.Dtos;
+﻿using Application.Common.Contracts;
 using Application.Common.Interfaces;
 using Application.Common.Interfaces.Repositories;
 using Application.Common.Models;
@@ -9,8 +9,8 @@ using System.Net;
 
 namespace Application.Students.Queries
 {
-    public sealed record GetStudentByIdQuery(int Id): IRequest<Response<StudentDto>>{}
-    public sealed class GetStudentByIdQueryHandler : IRequestHandler<GetStudentByIdQuery, Response<StudentDto>>
+    public sealed record GetStudentByIdQuery(int Id): IRequest<StudentResponse>{}
+    public sealed class GetStudentByIdQueryHandler : IRequestHandler<GetStudentByIdQuery, StudentResponse>
     {
         private readonly IMapper _mapper;
         private readonly IStudentRepository _repo;
@@ -19,13 +19,13 @@ namespace Application.Students.Queries
             _mapper = mapper;
             _repo = repo;
         }
-        public async Task<Response<StudentDto>> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
+        public async Task<StudentResponse> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<Student>? student = await _repo.FindAsync(x => x.StudentId == request.Id, cancellationToken);
+            Student? student = await _repo.GetAsync(request.Id);
             if (student is null)
-                return Response.Fail<StudentDto>("Not Found", HttpStatusCode.NotFound);
-            StudentDto studentDto = _mapper.Map<Student, StudentDto>(student.FirstOrDefault()!);
-            return Response.Ok<StudentDto>(studentDto, HttpStatusCode.OK, "Success");
+                new StudentResponse();
+            StudentResponse studentResponse = _mapper.Map<Student, StudentResponse>(student!);
+            return studentResponse;
         }
     }
 }

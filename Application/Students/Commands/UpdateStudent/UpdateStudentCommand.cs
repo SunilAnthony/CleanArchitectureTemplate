@@ -1,5 +1,8 @@
-﻿using Application.Common.Dtos;
+﻿using Application.Common.Contracts;
+using Application.Common.Interfaces.Repositories;
 using Application.Common.Models;
+using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,12 +12,49 @@ using System.Threading.Tasks;
 
 namespace Application.Students.Commands.UpdateStudent
 {
-    public sealed record UpdateStudentCommand(int Id, string FirstName, string LastName, string EmailAddress) : IRequest<Response<StudentDto>> {}
-    public sealed class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, Response<StudentDto>>
+    public sealed record UpdateStudentCommand(int StudentId, string FirstName, string LastName, string EmailAddress) : IRequest<StudentResponse> {}
+    public sealed class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, StudentResponse>
     {
-        public Task<Response<StudentDto>> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
+        private readonly IStudentRepository _studentRepository;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public UpdateStudentCommandHandler(IStudentRepository studentRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            _studentRepository = studentRepository;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
+        }
+        public async Task<StudentResponse> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
+        {
+            
+
+            try
+            {
+                //Get Student by Id
+                var student = await _studentRepository.GetAsync(request.StudentId);
+
+                if (student != null)
+                {
+                    //Update Student
+                    student.FirstName = request.FirstName;
+                    student.LastName = request.LastName;
+                    student.EmailAddress = request.EmailAddress;
+
+                    _studentRepository.UpdateAsync(student);
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+                    var userResponse = _mapper.Map<Student, StudentResponse>(student);
+                    return userResponse;
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
+            
         }
     }
 }

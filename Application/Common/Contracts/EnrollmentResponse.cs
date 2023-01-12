@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Common.Dtos
+namespace Application.Common.Contracts
 {
-    public sealed class EnrollmentDto
+    public sealed class EnrollmentResponse
     {
         public int EnrollmentId { get; set; }
         public Grade? Grade { get; set; }
 
         public int CourseId { get; set; }
-        public CourseDto Course { get; set; }
+        public CourseResponse Course { get; set; }
 
         public int StudentId { get; set; }
-        public StudentDto Student { get; set; }
+        public StudentResponse Student { get; set; }
     }
 }

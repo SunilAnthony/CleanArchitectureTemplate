@@ -13,14 +13,9 @@ namespace Infrastructure.Persistence
     public class ApplicationDbContext : DbContext
     {
 
-        private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
-            AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
-            _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
-        }
+        {}
 
         public DbSet<Student> Students => Set<Student>();
 
@@ -42,7 +37,6 @@ namespace Infrastructure.Persistence
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

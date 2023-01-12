@@ -18,27 +18,25 @@ namespace Infrastructure.Repositories
             _context = context;
             _entities = context.Set<T>();
         }
-        public async virtual Task<bool> CreateAsync(T entity, CancellationToken cancellationToken = default)
+        public virtual T CreateAsync(T entity)
         {
             try
             {
                 _entities.Add(entity);
-                await _context.SaveChangesAsync(cancellationToken);
-                return true;
+                return entity;
             }
             catch (Exception)
             {
 
-                return false;
+                return new T();
             }
         }
 
-        public async virtual Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken = default)
+        public virtual bool DeleteAsync(T entity)
         {
             try
             {
                 _entities.Remove(entity);
-                await _context.SaveChangesAsync(cancellationToken);
                 return true;
             }
             catch (Exception)
@@ -48,9 +46,9 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public virtual async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+        public virtual async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellation)
         {
-            return await _entities.Where(predicate).ToListAsync(cancellationToken);
+            return await _entities.Where(predicate).ToListAsync(cancellation);
         }
 
         public virtual async Task<ICollection<T>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -63,18 +61,17 @@ namespace Infrastructure.Repositories
             return await _entities.FindAsync(StudentId, cancellationToken) ?? new T();
         }
 
-        public async virtual Task<bool> UpdateAsync(T entity, CancellationToken cancellationToken = default)
+        public virtual T UpdateAsync(T entity)
         {
             try
             {
                 _entities.Update(entity);
-                await _context.SaveChangesAsync(cancellationToken);
-                return true;
+                return entity;
             }
             catch (Exception)
             {
 
-                return false;
+                return new T();
             }
         }
 
@@ -95,7 +92,7 @@ namespace Infrastructure.Repositories
         {
             var query = _entities.Where(predicate).AsQueryable();
 
-            foreach (var property in _context.Model.FindEntityType(typeof(T)).GetNavigations())
+            foreach (var property in _context.Model.FindEntityType(typeof(T))!.GetNavigations())
             {
                 query = query.Include(property.Name);
             }
@@ -103,47 +100,41 @@ namespace Infrastructure.Repositories
             return await query.FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async virtual Task<bool> CreateRangeAsync(List<T> entity, CancellationToken cancellationToken = default)
+        public virtual bool CreateRangeAsync(List<T> entity)
         {
             try
             {
                 _entities.AddRange(entity);
-                await _context.SaveChangesAsync(cancellationToken);
                 return true;
             }
             catch (Exception)
             {
-
                 return false;
             }
         }
 
-        public async virtual Task<bool> UpdateRangeAsync(List<T> entity, CancellationToken cancellationToken = default)
+        public virtual bool UpdateRangeAsync(List<T> entity)
         {
             try
             {
                 _entities.UpdateRange(entity);
-                await _context.SaveChangesAsync(cancellationToken);
                 return true;
             }
             catch (Exception)
             {
-
                 return false;
             }
         }
-        public async virtual Task<bool> DeleteRangeAsync(List<T> entity, CancellationToken cancellationToken = default)
+        public virtual bool DeleteRangeAsync(List<T> entity)
         {
             try
             {
                 _entities.RemoveRange(entity);
-                await _context.SaveChangesAsync(cancellationToken);
                 return true;
             }
             catch (Exception)
             {
-
-                return false;
+               return false;
             }
         }
     }

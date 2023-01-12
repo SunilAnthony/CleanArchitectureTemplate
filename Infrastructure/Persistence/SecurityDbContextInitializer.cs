@@ -58,7 +58,7 @@ namespace Infrastructure.Persistence
         public async Task TrySeedAsync()
         {
             // Default roles
-            var administratorRole = new ApplicationRole("Administrator");
+            var administratorRole = new ApplicationRole("Administrator", "Administrator");
 
             if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
             {

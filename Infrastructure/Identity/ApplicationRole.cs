@@ -1,15 +1,14 @@
-﻿using Infrastructure.Enums;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 
 namespace Infrastructure.Identity
 {
     public sealed class ApplicationRole : IdentityRole
     {
-        public ApplicationRole(string name) : base(name)
+        public ApplicationRole(string name, string description) : base(name)
         {
-
+            Description= description;
         }
-        public Permissions Permissions { get; set; }
+        public string Description { get; set; }
     }
 }
